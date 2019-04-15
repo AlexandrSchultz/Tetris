@@ -1,84 +1,52 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    
-    public static int numLinesCleared = 0;
+    private Dictionary<int, int> scoreByLineCount = new Dictionary<int, int>
+    {
+        {1, 100},
+        {2, 300},
+        {3, 700},
+        {4, 1500},
+    };
 
-    //Score
-    public int scoreOniLine = 100;//счёт за 1 линию
-    public int scoreTwoLine = 300;//счёт за 2линии
-    public int scoreThreeLine = 700;//счёт за 3 линии
-    public int scoreFourLine = 1500;//счёт за 4 линии
+    private int numLinesCleared = 0;
 
     public Text scoreText;
+    public Text lineText;
 
-    public static int currentScore;
+    private static int currentScore;
 
-    //обновление счёта
-    public void UpdateScore()
+    private void Awake()
     {
-        if (Grid.numberOfRowThisTurn > 0)
-        {
-            //если переменная отвечающая за число линий равна 1, то вызывается функция которая к текущему счёту прибавить счёт за 1 линию(далее по анологии)
-            if (Grid.numberOfRowThisTurn == 1)
-            {
-                ClearedOneLine();
-            }
-            else if (Grid.numberOfRowThisTurn == 2)
-            {
-                ClearedTwoLone();
-            }
-            else if (Grid.numberOfRowThisTurn == 3)
-            {
-                ClearedThreeLine();
-            }
-            else if (Grid.numberOfRowThisTurn == 4)
-            {
-                ClearedFourLine();
-            }
-            Grid.numberOfRowThisTurn = 0;
-        }
+        //подписка на событие методом, который будет исполнятся по заполнению линии
+        Grid.LineFull += ClearedLine;
     }
 
     //функция срабатывающая при удалении одной линии
-    public void ClearedOneLine()
+    private void ClearedLine(int lineCount)
     {
+        if (!scoreByLineCount.ContainsKey(lineCount))
+        {
+            return;
+        }
         //при удалении одной линии к текущему счёту прибавляется счёт за одну линию(далее аналогично)
-        currentScore += scoreOniLine;
-        numLinesCleared++;
+        currentScore += scoreByLineCount[lineCount];
+        numLinesCleared = lineCount;
+        Debug.Log(numLinesCleared);
     }
 
-    public void ClearedTwoLone()
-    {
-        currentScore += scoreTwoLine;
-        numLinesCleared += 2;
-    }
-
-    public void ClearedThreeLine()
-    {
-        currentScore += scoreThreeLine;
-        numLinesCleared += 3;
-    }
-
-    public void ClearedFourLine()
-    {
-        currentScore += scoreFourLine;
-        numLinesCleared += 4;
-    }
-
-    //отоброжение счёта 
+    //отображение счёта 
     public void UpdateUI()
     {
         scoreText.text = currentScore.ToString();
+        lineText.text = numLinesCleared.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        UpdateScore();
         UpdateUI();
-        
     }
 }

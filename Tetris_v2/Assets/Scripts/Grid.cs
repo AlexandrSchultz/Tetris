@@ -10,15 +10,18 @@ public class Grid : MonoBehaviour
     public static int h = 20;
     public static Transform[,] grid = new Transform[w,h];
 
+    public delegate void LineOnField(int lineCount);
+    public static event LineOnField LineFull;
+
     //переменная для подсчёта количества удаляемых линий
-    public static int numberOfRowThisTurn = 0;
-   
+    //public static int numberOfRowThisTurn = 0;
+    public static int lineCount = 0;
+
     //функция округления координат
     public static Vector2 roundVec2 (Vector2 v)
     {
         return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
     }
-
     
     //функция для проверки находится ли координаты между границами или за её пределами
     public static bool insideBorder(Vector2 pos)
@@ -68,7 +71,7 @@ public class Grid : MonoBehaviour
             if (grid[x, y] == null)
                 return false;
         }
-            
+
         return true;
     }
 
@@ -82,8 +85,9 @@ public class Grid : MonoBehaviour
                 deleteRow(y);
                 decreaseRowsAbove(y + 1);
                 --y;
-                numberOfRowThisTurn++;
+                lineCount++;
             }
         }
+        LineFull(lineCount);
     }
 }

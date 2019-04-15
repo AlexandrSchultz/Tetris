@@ -23,7 +23,7 @@ public class LevelUp : MonoBehaviour
 
     void UpdateLevel()
     {
-        currentLevel = Score.numLinesCleared/5;
+        currentLevel = Grid.lineCount/5;
     }
 
     public void Up()
@@ -45,7 +45,6 @@ public class LevelUp : MonoBehaviour
     private void UpdateUI()
     {
         lvl.text = currentLevel.ToString();
-        //lines.text = Score.numLinesCleared.ToString();
     }
 
 
