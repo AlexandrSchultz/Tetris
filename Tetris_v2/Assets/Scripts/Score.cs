@@ -12,7 +12,7 @@ public class Score : MonoBehaviour
         {4, 1500},
     };
 
-    private int numLinesCleared = 0;
+    private int numLinesCleared;
 
     public Text scoreText;
     public Text lineText;
@@ -34,7 +34,7 @@ public class Score : MonoBehaviour
         }
         //при удалении одной линии к текущему счёту прибавляется счёт за одну линию(далее аналогично)
         currentScore += scoreByLineCount[lineCount];
-        numLinesCleared = lineCount;
+        numLinesCleared += lineCount;
         Debug.Log(numLinesCleared);
     }
 

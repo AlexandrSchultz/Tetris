@@ -4,6 +4,8 @@ public class Group : MonoBehaviour
 {
     public float lastFall = 0;
     private float a = 1;
+
+    Grid gridObj = new Grid();
     
     //провекра дочерних блоков
     private bool isValidGridPos()
@@ -186,7 +188,7 @@ public class Group : MonoBehaviour
                 transform.position += new Vector3(0, 1, 0);
 
                 //Удалить заполненные горизонтальные линии
-                Grid.deleteFullRows();
+                gridObj.deleteFullRows();
 
                 //заспавнить новую группу
                 FindObjectOfType<Preview>().Spawn();

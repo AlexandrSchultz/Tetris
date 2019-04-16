@@ -5,6 +5,7 @@ public class LevelUp : MonoBehaviour
 {
     public static float fallSpeed = 1.0f;
     public static int currentLevel;
+    Grid gridObj = new Grid();
 
     public Text lvl;
     //public Text lines;
@@ -23,7 +24,7 @@ public class LevelUp : MonoBehaviour
 
     void UpdateLevel()
     {
-        currentLevel = Grid.lineCount/5;
+        currentLevel = gridObj.LineCount / 5;
     }
 
     public void Up()

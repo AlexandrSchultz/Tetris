@@ -14,8 +14,14 @@ public class Grid : MonoBehaviour
     public static event LineOnField LineFull;
 
     //переменная для подсчёта количества удаляемых линий
-    //public static int numberOfRowThisTurn = 0;
-    public static int lineCount = 0;
+    private int lineCount;
+    public int LineCount
+    {
+        get
+        {
+            return lineCount;
+        }
+    }
 
     //функция округления координат
     public static Vector2 roundVec2 (Vector2 v)
@@ -76,7 +82,7 @@ public class Grid : MonoBehaviour
     }
 
     //функция удаления всех заполненых линий
-    public static void deleteFullRows()
+    public void deleteFullRows()
     {
         for (int y = 0; y < h; ++y)
         {
