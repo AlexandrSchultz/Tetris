@@ -2,9 +2,8 @@
 
 public class Group : MonoBehaviour {
     private float lastFall = 0;
-
+   
     Grid gridObj = new Grid();
-    Score score = new Score();
 
     //провекра дочерних блоков
     private bool isValidGridPos() {
@@ -128,7 +127,7 @@ public class Group : MonoBehaviour {
         }
 
         //падение
-        if (Time.time - lastFall >= 1*0.25f) {
+        if (Time.time - lastFall >= 1.0f - ((float) Score.CurrentLevel * 0.199f)) {
             //изменить позицию
             transform.position += new Vector3(0, -1, 0);
 

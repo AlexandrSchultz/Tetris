@@ -14,11 +14,11 @@ public class Grid : MonoBehaviour {
     public static event LineOnField LineFull = delegate { };
 
     //переменная для подсчёта количества удаляемых линий
-    private int lineCount;
+    private int m_lineCount;
 
     public int LineCount {
         get {
-            return lineCount;
+            return m_lineCount;
         }
     }
 
@@ -77,9 +77,9 @@ public class Grid : MonoBehaviour {
                 deleteRow(y);
                 decreaseRowsAbove(y + 1);
                 --y;
-                lineCount++;
+                m_lineCount++;
             }
         }
-        LineFull(lineCount);
+        LineFull(m_lineCount);
     }
 }

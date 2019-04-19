@@ -24,14 +24,23 @@ public class Score : MonoBehaviour {
     public event ToRiseTheLevel LevelUp;
 
     private int m_numLinesCleared;
-    private int m_currentLevel;
+    private static int m_currentLevel;
     private static int m_currentScore;
     private int m_countLine;
     private float m_fallSpeed = 1.0f;
 
-    public Text scoreText;
-    public Text lineText;
-    public Text lvl;
+    public static int CurrentLevel {
+        get {
+            return m_currentLevel;
+        }
+    }
+
+    [SerializeField]
+    private Text scoreText;
+    [SerializeField]
+    private Text lineText;
+    [SerializeField]
+    private Text lvl;
 
     private void Awake() {
         //подписка на событие методом, который будет исполнятся по заполнению линии
