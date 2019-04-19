@@ -6,6 +6,8 @@
 [Ll]ogs/
 
 Tetris_v2.sln.DotSettings.user
+.idea/
+VSTemplates/
 
 ![Aa]ssets/**/*.meta
 
