@@ -2,51 +2,85 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : MonoBehaviour
-{
-    private Dictionary<int, int> scoreByLineCount = new Dictionary<int, int>
-    {
+public class Score : MonoBehaviour {
+    private readonly Dictionary<int, int> m_scoreByLineCount = new Dictionary<int, int> {
         {1, 100},
         {2, 300},
         {3, 700},
         {4, 1500},
     };
 
-    private int numLinesCleared;
+    Grid gridObj = new Grid();
+
+    public delegate void Click();
+
+    public delegate float ToRiseTheLevel(int m_currentLevel);
+
+    //события для уменьшения/увелечения уровня 
+    public event Click Plus = delegate { };
+
+    public event Click Minus = delegate { };
+
+    public event ToRiseTheLevel LevelUp;
+
+    private int m_numLinesCleared;
+    private int m_currentLevel;
+    private static int m_currentScore;
+    private int m_countLine;
+    private float m_fallSpeed = 1.0f;
 
     public Text scoreText;
     public Text lineText;
+    public Text lvl;
 
-    private static int currentScore;
-
-    private void Awake()
-    {
+    private void Awake() {
         //подписка на событие методом, который будет исполнятся по заполнению линии
         Grid.LineFull += ClearedLine;
+
+        Plus += Up;
+        Minus += Down;
     }
 
     //функция срабатывающая при удалении одной линии
-    private void ClearedLine(int lineCount)
-    {
-        if (!scoreByLineCount.ContainsKey(lineCount))
-        {
+    private void ClearedLine(int lineCount) {
+        if (!m_scoreByLineCount.ContainsKey(lineCount)) {
             return;
         }
         //при удалении одной линии к текущему счёту прибавляется счёт за одну линию(далее аналогично)
-        currentScore += scoreByLineCount[lineCount];
-        numLinesCleared += lineCount;
-        Debug.Log(numLinesCleared);
+        m_currentScore += m_scoreByLineCount[lineCount];
+        m_numLinesCleared += lineCount;
+        m_countLine += lineCount;
+        if (m_countLine >= 5) {
+            Up();
+            m_countLine = 0;
+        }
+        UpdateUI();
+    }
+
+    private void Up() {
+        m_currentLevel++;
+        UpdateUI();
+    }
+
+    private void Down() {
+        m_currentLevel--;
+        UpdateUI();
     }
 
     //отображение счёта 
-    public void UpdateUI()
-    {
-        scoreText.text = currentScore.ToString();
-        lineText.text = numLinesCleared.ToString();
+    public void UpdateUI() {
+        scoreText.text = m_currentScore.ToString();
+        lineText.text = m_numLinesCleared.ToString();
+        lvl.text = m_currentLevel.ToString();
     }
 
-    private void Update()
-    {
-        UpdateUI();
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.KeypadPlus)) {
+            Plus();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus)) {
+            Minus();
+        }
     }
 }
