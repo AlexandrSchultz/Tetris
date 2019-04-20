@@ -10,24 +10,18 @@ public class Score : MonoBehaviour {
         {4, 1500},
     };
 
-    Grid gridObj = new Grid();
-
     public delegate void Click();
-
-    public delegate float ToRiseTheLevel(int m_currentLevel);
 
     //события для уменьшения/увелечения уровня 
     public event Click Plus = delegate { };
 
     public event Click Minus = delegate { };
 
-    public event ToRiseTheLevel LevelUp;
-
     private int m_numLinesCleared;
     private static int m_currentLevel;
     private static int m_currentScore;
     private int m_countLine;
-    private float m_fallSpeed = 1.0f;
+    private float m_fallSpeed;
 
     public static int CurrentLevel {
         get {
@@ -77,7 +71,7 @@ public class Score : MonoBehaviour {
     }
 
     //отображение счёта 
-    public void UpdateUI() {
+    private void UpdateUI() {
         scoreText.text = m_currentScore.ToString();
         lineText.text = m_numLinesCleared.ToString();
         lvl.text = m_currentLevel.ToString();

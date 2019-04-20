@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Group : MonoBehaviour {
-    private float lastFall = 0;
-   
-    Grid gridObj = new Grid();
+    private float m_lastFall;
+
+    private readonly Grid m_grid = new Grid();
 
     //провекра дочерних блоков
     private bool isValidGridPos() {
@@ -24,8 +25,8 @@ public class Group : MonoBehaviour {
     //
     private void updateGrid() {
         //удаление старых дочерних блоков
-        for (int y = 0; y < Grid.h; ++y)
-            for (int x = 0; x < Grid.w; ++x)
+        for (int y = 0; y < Grid.H; ++y)
+            for (int x = 0; x < Grid.W; ++x)
                 if (Grid.grid[x, y] != null)
                     if (Grid.grid[x, y].parent == transform)
                         Grid.grid[x, y] = null;
@@ -38,11 +39,10 @@ public class Group : MonoBehaviour {
     }
 
     // Start is called before the first frame update
-    void Start() {
+    private void Start() {
         if (!isValidGridPos()) {
-            Debug.Log("GAME OVER");
             Destroy(gameObject);
-            Application.LoadLevel("GameOver");
+            SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single);
         }
     }
 
@@ -127,7 +127,7 @@ public class Group : MonoBehaviour {
         }
 
         //падение
-        if (Time.time - lastFall >= 1.0f - ((float) Score.CurrentLevel * 0.199f)) {
+        if (Time.time - m_lastFall >= 1.0f - (Score.CurrentLevel * 0.15f)) {
             //изменить позицию
             transform.position += new Vector3(0, -1, 0);
 
@@ -139,7 +139,7 @@ public class Group : MonoBehaviour {
                 transform.position += new Vector3(0, 1, 0);
 
                 //Удалить заполненные горизонтальные линии
-                gridObj.deleteFullRows();
+                m_grid.deleteFullRows();
 
                 //заспавнить новую группу
                 FindObjectOfType<Preview>().Spawn();
@@ -147,7 +147,7 @@ public class Group : MonoBehaviour {
                 //выключить скрипт
                 enabled = false;
             }
-            lastFall = Time.time;
+            m_lastFall = Time.time;
         }
     }
 }

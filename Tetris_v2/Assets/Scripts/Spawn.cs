@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Spawner : MonoBehaviour {
+public class Spawn : MonoBehaviour {
     public GameObject[] groups;
 
-    public void spawnNext() {
+    private void spawnNext() {
         int i = Random.Range(0, groups.Length);
         Instantiate(groups[i], transform.position, Quaternion.identity);
     }
 
     // Start is called before the first frame update
-    void Start() {
+    private void Start() {
         spawnNext();
     }
 }

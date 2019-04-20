@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-    public static int w = 10;
-    public static int h = 20;
-    public static Transform[,] grid = new Transform[w, h];
+    public const int W = 10;
+    public const int H = 20;
+    public static readonly Transform[,] grid = new Transform[W, H];
 
     public delegate void LineOnField(int lineCount);
 
@@ -16,12 +13,6 @@ public class Grid : MonoBehaviour {
     //переменная для подсчёта количества удаляемых линий
     private int m_lineCount;
 
-    public int LineCount {
-        get {
-            return m_lineCount;
-        }
-    }
-
     //функция округления координат
     public static Vector2 roundVec2(Vector2 v) {
         return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
@@ -29,20 +20,20 @@ public class Grid : MonoBehaviour {
 
     //функция для проверки находится ли координаты между границами или за её пределами
     public static bool insideBorder(Vector2 pos) {
-        return ((int) pos.x >= 0 && (int) pos.x < w && (int) pos.y >= 0);
+        return ((int) pos.x >= 0 && (int) pos.x < W && (int) pos.y >= 0);
     }
 
     //удаление заполненной линии
-    public static void deleteRow(int y) {
-        for (int x = 0; x < w; ++x) {
+    private static void deleteRow(int y) {
+        for (int x = 0; x < W; ++x) {
             Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
         }
     }
 
     //падение вышестоящих фигур
-    public static void decreaseRow(int y) {
-        for (int x = 0; x < w; ++x) {
+    private static void decreaseRow(int y) {
+        for (int x = 0; x < W; ++x) {
             if (grid[x, y] != null) {
                 //перемещение вниз
                 grid[x, y - 1] = grid[x, y];
@@ -55,14 +46,14 @@ public class Grid : MonoBehaviour {
     }
 
     //предыдущую функцию на все линии 
-    public static void decreaseRowsAbove(int y) {
-        for (int i = y; i < h; ++i)
+    private static void decreaseRowsAbove(int y) {
+        for (int i = y; i < H; ++i)
             decreaseRow(i);
     }
 
     //функция проверки заполнения строки
-    public static bool isRowFull(int y) {
-        for (int x = 0; x < w; ++x) {
+    private static bool isRowFull(int y) {
+        for (int x = 0; x < W; ++x) {
             if (grid[x, y] == null)
                 return false;
         }
@@ -72,7 +63,7 @@ public class Grid : MonoBehaviour {
 
     //функция удаления всех заполненых линий
     public void deleteFullRows() {
-        for (int y = 0; y < h; ++y) {
+        for (int y = 0; y < H; ++y) {
             if (isRowFull(y)) {
                 deleteRow(y);
                 decreaseRowsAbove(y + 1);

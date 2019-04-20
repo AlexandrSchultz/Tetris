@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Preview : MonoBehaviour {
 
@@ -9,7 +7,7 @@ public class Preview : MonoBehaviour {
     public GameObject[] mino;
 
     // Start is called before the first frame update
-    void Start() {
+    private void Start() {
         minoNext = Random.Range(0, 7);
         Spawn();
     }
