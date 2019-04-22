@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class Group : MonoBehaviour {
     private float m_lastFall;
 
-    private readonly Grid m_grid = new Grid();
+    //private readonly Grid m_grid = new Grid();
 
     //провекра дочерних блоков
     private bool isValidGridPos() {
@@ -16,7 +16,7 @@ public class Group : MonoBehaviour {
                 return false;
 
             //блок в сетке
-            if (Grid.grid[(int) v.x, (int) v.y] != null && Grid.grid[(int) v.x, (int) v.y].parent != transform)
+            if (Grid.Ggrid[(int) v.x, (int) v.y] != null && Grid.Ggrid[(int) v.x, (int) v.y].parent != transform)
                 return false;
         }
         return true;
@@ -27,14 +27,14 @@ public class Group : MonoBehaviour {
         //удаление старых дочерних блоков
         for (int y = 0; y < Grid.H; ++y)
             for (int x = 0; x < Grid.W; ++x)
-                if (Grid.grid[x, y] != null)
-                    if (Grid.grid[x, y].parent == transform)
-                        Grid.grid[x, y] = null;
+                if (Grid.Ggrid[x, y] != null)
+                    if (Grid.Ggrid[x, y].parent == transform)
+                        Grid.Ggrid[x, y] = null;
 
         //добавление новых
         foreach (Transform child in transform) {
             Vector2 v = Grid.roundVec2(child.position);
-            Grid.grid[(int) v.x, (int) v.y] = child;
+            Grid.Ggrid[(int) v.x, (int) v.y] = child;
         }
     }
 
@@ -139,7 +139,7 @@ public class Group : MonoBehaviour {
                 transform.position += new Vector3(0, 1, 0);
 
                 //Удалить заполненные горизонтальные линии
-                m_grid.deleteFullRows();
+                Grid.deleteFullRows();
 
                 //заспавнить новую группу
                 FindObjectOfType<Preview>().Spawn();

@@ -4,14 +4,14 @@ public class Grid : MonoBehaviour {
 
     public const int W = 10;
     public const int H = 20;
-    public static readonly Transform[,] grid = new Transform[W, H];
+    public static readonly Transform[,] Ggrid = new Transform[W, H];
 
     public delegate void LineOnField(int lineCount);
 
     public static event LineOnField LineFull = delegate { };
 
     //переменная для подсчёта количества удаляемых линий
-    private int m_lineCount;
+    private static int m_lineCount;
 
     //функция округления координат
     public static Vector2 roundVec2(Vector2 v) {
@@ -26,21 +26,21 @@ public class Grid : MonoBehaviour {
     //удаление заполненной линии
     private static void deleteRow(int y) {
         for (int x = 0; x < W; ++x) {
-            Destroy(grid[x, y].gameObject);
-            grid[x, y] = null;
+            Destroy(Ggrid[x, y].gameObject);
+            Ggrid[x, y] = null;
         }
     }
 
     //падение вышестоящих фигур
     private static void decreaseRow(int y) {
         for (int x = 0; x < W; ++x) {
-            if (grid[x, y] != null) {
+            if (Ggrid[x, y] != null) {
                 //перемещение вниз
-                grid[x, y - 1] = grid[x, y];
-                grid[x, y] = null;
+                Ggrid[x, y - 1] = Ggrid[x, y];
+                Ggrid[x, y] = null;
 
                 //обновляет позицию блоков
-                grid[x, y - 1].position += new Vector3(0, -1, 0);
+                Ggrid[x, y - 1].position += new Vector3(0, -1, 0);
             }
         }
     }
@@ -54,7 +54,7 @@ public class Grid : MonoBehaviour {
     //функция проверки заполнения строки
     private static bool isRowFull(int y) {
         for (int x = 0; x < W; ++x) {
-            if (grid[x, y] == null)
+            if (Ggrid[x, y] == null)
                 return false;
         }
 
@@ -62,7 +62,7 @@ public class Grid : MonoBehaviour {
     }
 
     //функция удаления всех заполненых линий
-    public void deleteFullRows() {
+    public static void deleteFullRows() {
         for (int y = 0; y < H; ++y) {
             if (isRowFull(y)) {
                 deleteRow(y);
@@ -72,5 +72,6 @@ public class Grid : MonoBehaviour {
             }
         }
         LineFull(m_lineCount);
+        m_lineCount = 0;
     }
 }
