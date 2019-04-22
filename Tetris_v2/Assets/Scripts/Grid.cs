@@ -14,17 +14,17 @@ public class Grid : MonoBehaviour {
     private static int m_lineCount;
 
     //функция округления координат
-    public static Vector2 roundVec2(Vector2 v) {
+    public static Vector2 RoundVec2(Vector2 v) {
         return new Vector2(Mathf.Round(v.x), Mathf.Round(v.y));
     }
 
     //функция для проверки находится ли координаты между границами или за её пределами
-    public static bool insideBorder(Vector2 pos) {
+    public static bool InsideBorder(Vector2 pos) {
         return ((int) pos.x >= 0 && (int) pos.x < W && (int) pos.y >= 0);
     }
 
     //удаление заполненной линии
-    private static void deleteRow(int y) {
+    private static void DeleteRow(int y) {
         for (int x = 0; x < W; ++x) {
             Destroy(Ggrid[x, y].gameObject);
             Ggrid[x, y] = null;
@@ -32,7 +32,7 @@ public class Grid : MonoBehaviour {
     }
 
     //падение вышестоящих фигур
-    private static void decreaseRow(int y) {
+    private static void DecreaseRow(int y) {
         for (int x = 0; x < W; ++x) {
             if (Ggrid[x, y] != null) {
                 //перемещение вниз
@@ -46,13 +46,13 @@ public class Grid : MonoBehaviour {
     }
 
     //предыдущую функцию на все линии 
-    private static void decreaseRowsAbove(int y) {
+    private static void DecreaseRowsAbove(int y) {
         for (int i = y; i < H; ++i)
-            decreaseRow(i);
+            DecreaseRow(i);
     }
 
     //функция проверки заполнения строки
-    private static bool isRowFull(int y) {
+    private static bool IsRowFull(int y) {
         for (int x = 0; x < W; ++x) {
             if (Ggrid[x, y] == null)
                 return false;
@@ -62,11 +62,11 @@ public class Grid : MonoBehaviour {
     }
 
     //функция удаления всех заполненых линий
-    public static void deleteFullRows() {
+    public static void DeleteFullRows() {
         for (int y = 0; y < H; ++y) {
-            if (isRowFull(y)) {
-                deleteRow(y);
-                decreaseRowsAbove(y + 1);
+            if (IsRowFull(y)) {
+                DeleteRow(y);
+                DecreaseRowsAbove(y + 1);
                 --y;
                 m_lineCount++;
             }

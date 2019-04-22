@@ -7,12 +7,12 @@ public class Group : MonoBehaviour {
     //private readonly Grid m_grid = new Grid();
 
     //провекра дочерних блоков
-    private bool isValidGridPos() {
+    private bool IsValidGridPos() {
         foreach (Transform child in transform) {
-            Vector2 v = Grid.roundVec2(child.position); //позиция одной миношки(одного блока)
+            Vector2 v = Grid.RoundVec2(child.position); //позиция одной миношки(одного блока)
 
             //проверка на то что блок внутри границы
-            if (!Grid.insideBorder(v))
+            if (!Grid.InsideBorder(v))
                 return false;
 
             //блок в сетке
@@ -23,7 +23,7 @@ public class Group : MonoBehaviour {
     }
 
     //
-    private void updateGrid() {
+    private void UpdateGrid() {
         //удаление старых дочерних блоков
         for (int y = 0; y < Grid.H; ++y)
             for (int x = 0; x < Grid.W; ++x)
@@ -33,14 +33,14 @@ public class Group : MonoBehaviour {
 
         //добавление новых
         foreach (Transform child in transform) {
-            Vector2 v = Grid.roundVec2(child.position);
+            Vector2 v = Grid.RoundVec2(child.position);
             Grid.Ggrid[(int) v.x, (int) v.y] = child;
         }
     }
 
     // Start is called before the first frame update
     private void Start() {
-        if (!isValidGridPos()) {
+        if (!IsValidGridPos()) {
             Destroy(gameObject);
             SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single);
         }
@@ -51,9 +51,9 @@ public class Group : MonoBehaviour {
         transform.position += new Vector3(-1, 0, 0);
 
         //проверка
-        if (isValidGridPos()) {
+        if (IsValidGridPos()) {
             //обновление сетки 
-            updateGrid();
+            UpdateGrid();
         } else {
             //если false вернуться 
             transform.position += new Vector3(1, 0, 0);
@@ -63,8 +63,8 @@ public class Group : MonoBehaviour {
     private void Right() {
         transform.position += new Vector3(1, 0, 0);
 
-        if (isValidGridPos()) {
-            updateGrid();
+        if (IsValidGridPos()) {
+            UpdateGrid();
         } else {
             transform.position += new Vector3(-1, 0, 0);
         }
@@ -75,8 +75,8 @@ public class Group : MonoBehaviour {
         transform.position += new Vector3(0, -1, 0);
 
         //проверка
-        if (isValidGridPos()) {
-            updateGrid();
+        if (IsValidGridPos()) {
+            UpdateGrid();
         } else {
             //возвращает позицию если проверка не true
             transform.position += new Vector3(0, 1, 0);
@@ -85,8 +85,8 @@ public class Group : MonoBehaviour {
 
     private void Rotate() {
         transform.Rotate(0, 0, -90);
-        if (isValidGridPos()) {
-            updateGrid();
+        if (IsValidGridPos()) {
+            UpdateGrid();
         } else {
             transform.Rotate(0, 0, 90);
         }
@@ -132,14 +132,14 @@ public class Group : MonoBehaviour {
             transform.position += new Vector3(0, -1, 0);
 
             //проверка
-            if (isValidGridPos()) {
-                updateGrid();
+            if (IsValidGridPos()) {
+                UpdateGrid();
             } else {
                 //возвращает позицию если проверка не true
                 transform.position += new Vector3(0, 1, 0);
 
                 //Удалить заполненные горизонтальные линии
-                Grid.deleteFullRows();
+                Grid.DeleteFullRows();
 
                 //заспавнить новую группу
                 FindObjectOfType<Preview>().Spawn();
