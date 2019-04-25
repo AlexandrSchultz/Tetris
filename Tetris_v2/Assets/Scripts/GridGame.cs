@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Grid : MonoBehaviour {
+public class GridGame : MonoBehaviour {
 
     public const int W = 10;
     public const int H = 20;

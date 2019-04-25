@@ -38,7 +38,7 @@ public class Score : MonoBehaviour {
 
     private void Awake() {
         //подписка на событие методом, который будет исполнятся по заполнению линии
-        Grid.LineFull += ClearedLine;
+        GridGame.LineFull += ClearedLine;
 
         Plus += Up;
         Minus += Down;
