@@ -45,7 +45,7 @@ public class Group : MonoBehaviour {
     private void Start() {
         if (!IsValidGridPos()) {
             Destroy(gameObject);
-            SceneManager.LoadScene(sceneBuildIndex: 1, LoadSceneMode.Single);
+            SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
     }
 
