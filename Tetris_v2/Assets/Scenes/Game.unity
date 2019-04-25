@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31c1207a245e1844db312fed9b71a050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minoNext: 999
+  minoNext: 7
   groups:
   - {fileID: 4145065360881161713, guid: f598dcca9b4770a428b6dc816fd0d590, type: 3}
   - {fileID: 3146092136883375922, guid: 05c2f48dcffab034ca3593207c3c0702, type: 3}

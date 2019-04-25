@@ -4,7 +4,7 @@ public class Grid : MonoBehaviour {
 
     public const int W = 10;
     public const int H = 20;
-    public static readonly Transform[,] Ggrid = new Transform[W, H];
+    public static readonly Transform[,] GridForMinos = new Transform[W, H];
 
     public delegate void LineOnField(int lineCount);
 
@@ -26,21 +26,21 @@ public class Grid : MonoBehaviour {
     //удаление заполненной линии
     private static void DeleteRow(int y) {
         for (int x = 0; x < W; ++x) {
-            Destroy(Ggrid[x, y].gameObject);
-            Ggrid[x, y] = null;
+            Destroy(GridForMinos[x, y].gameObject);
+            GridForMinos[x, y] = null;
         }
     }
 
     //падение вышестоящих фигур
     private static void DecreaseRow(int y) {
         for (int x = 0; x < W; ++x) {
-            if (Ggrid[x, y] != null) {
+            if (GridForMinos[x, y] != null) {
                 //перемещение вниз
-                Ggrid[x, y - 1] = Ggrid[x, y];
-                Ggrid[x, y] = null;
+                GridForMinos[x, y - 1] = GridForMinos[x, y];
+                GridForMinos[x, y] = null;
 
                 //обновляет позицию блоков
-                Ggrid[x, y - 1].position += new Vector3(0, -1, 0);
+                GridForMinos[x, y - 1].position += new Vector3(0, -1, 0);
             }
         }
     }
@@ -54,7 +54,7 @@ public class Grid : MonoBehaviour {
     //функция проверки заполнения строки
     private static bool IsRowFull(int y) {
         for (int x = 0; x < W; ++x) {
-            if (Ggrid[x, y] == null)
+            if (GridForMinos[x, y] == null)
                 return false;
         }
 

@@ -4,9 +4,7 @@ using UnityEngine.SceneManagement;
 public class Group : MonoBehaviour {
     private float m_lastFall;
 
-    //private readonly Grid m_grid = new Grid();
-
-    //провекра дочерних блоков
+    //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
         foreach (Transform child in transform) {
             Vector2 v = Grid.RoundVec2(child.position); //позиция одной миношки(одного блока)
@@ -16,7 +14,7 @@ public class Group : MonoBehaviour {
                 return false;
 
             //блок в сетке
-            if (Grid.Ggrid[(int) v.x, (int) v.y] != null && Grid.Ggrid[(int) v.x, (int) v.y].parent != transform)
+            if (Grid.GridForMinos[(int) v.x, (int) v.y] != null && Grid.GridForMinos[(int) v.x, (int) v.y].parent != transform)
                 return false;
         }
         return true;
@@ -25,16 +23,19 @@ public class Group : MonoBehaviour {
     //
     private void UpdateGrid() {
         //удаление старых дочерних блоков
-        for (int y = 0; y < Grid.H; ++y)
-            for (int x = 0; x < Grid.W; ++x)
-                if (Grid.Ggrid[x, y] != null)
-                    if (Grid.Ggrid[x, y].parent == transform)
-                        Grid.Ggrid[x, y] = null;
-
+        for (int y = 0; y < Grid.H; ++y) {
+            for (int x = 0; x < Grid.W; ++x) {
+                if (Grid.GridForMinos[x, y] != null) {
+                    if (Grid.GridForMinos[x, y].parent == transform) {
+                        Grid.GridForMinos[x, y] = null;
+                    }
+                }
+            }
+        }
         //добавление новых
         foreach (Transform child in transform) {
             Vector2 v = Grid.RoundVec2(child.position);
-            Grid.Ggrid[(int) v.x, (int) v.y] = child;
+            Grid.GridForMinos[(int) v.x, (int) v.y] = child;
         }
     }
 
@@ -92,7 +93,6 @@ public class Group : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
     private void Update() {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) //влево с залипанием стрелки
         {
@@ -127,7 +127,7 @@ public class Group : MonoBehaviour {
         }
 
         //падение
-        if (Time.time - m_lastFall >= 1.0f - (Score.CurrentLevel * 0.15f)) {
+        if (Time.time - m_lastFall >= 1.0f - (Score.CurrentLevel * 0.1649f)) {
             //изменить позицию
             transform.position += new Vector3(0, -1, 0);
 
