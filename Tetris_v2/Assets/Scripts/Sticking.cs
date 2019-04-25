@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public static class Sticking {
     private const float DelayHolding = 0.4f; //время задержки при удержании
-    private const float Period = 0.2f; //период вызова метода
+    private const float Period = 0.02f; //период вызова метода
 
     public static IEnumerator StickingKey(KeyCode keyCode, UnityAction action) {
         action(); //метод исполняемый по клавише
@@ -33,6 +33,7 @@ public static class Sticking {
                     yield return null;
                 }
             }
+            yield return null;
         }
     }
 }

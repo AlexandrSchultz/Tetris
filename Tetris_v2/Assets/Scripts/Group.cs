@@ -49,44 +49,6 @@ public class Group : MonoBehaviour {
         }
     }
 
-/*
-    private void Left() {
-        //обновление позиции
-        transform.position += Vector3.left;
-
-        //проверка
-        if (IsValidGridPos()) {
-            //обновление сетки 
-            UpdateGrid();
-        } else {
-            //если false вернуться 
-            transform.position += Vector3.right;
-        }
-    }
-
-    private void Right() {
-        transform.position += Vector3.right;
-
-        if (IsValidGridPos()) {
-            UpdateGrid();
-        } else {
-            transform.position += Vector3.left;
-        }
-    }
-
-    private void Down() {
-        //изменить позицию
-        transform.position += Vector3.down;
-
-        //проверка
-        if (IsValidGridPos()) {
-            UpdateGrid();
-        } else {
-            //возвращает позицию если проверка не true
-            transform.position += Vector3.up;
-        }
-    }
-*/
     private void Move() {
         //изменить позицию
         transform.position += m_vector;
