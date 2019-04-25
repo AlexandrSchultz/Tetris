@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class Group : MonoBehaviour {
     private float m_lastFall;
+    private Vector3 m_vector;
+    private Vector3 m_reverseVector;
 
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
@@ -47,9 +49,10 @@ public class Group : MonoBehaviour {
         }
     }
 
+/*
     private void Left() {
         //обновление позиции
-        transform.position += new Vector3(-1, 0, 0);
+        transform.position += Vector3.left;
 
         //проверка
         if (IsValidGridPos()) {
@@ -57,30 +60,43 @@ public class Group : MonoBehaviour {
             UpdateGrid();
         } else {
             //если false вернуться 
-            transform.position += new Vector3(1, 0, 0);
+            transform.position += Vector3.right;
         }
     }
 
     private void Right() {
-        transform.position += new Vector3(1, 0, 0);
+        transform.position += Vector3.right;
 
         if (IsValidGridPos()) {
             UpdateGrid();
         } else {
-            transform.position += new Vector3(-1, 0, 0);
+            transform.position += Vector3.left;
         }
     }
 
     private void Down() {
         //изменить позицию
-        transform.position += new Vector3(0, -1, 0);
+        transform.position += Vector3.down;
 
         //проверка
         if (IsValidGridPos()) {
             UpdateGrid();
         } else {
             //возвращает позицию если проверка не true
-            transform.position += new Vector3(0, 1, 0);
+            transform.position += Vector3.up;
+        }
+    }
+*/
+    private void Move() {
+        //изменить позицию
+        transform.position += m_vector;
+
+        //проверка
+        if (IsValidGridPos()) {
+            UpdateGrid();
+        } else {
+            //возвращает позицию если проверка не true
+            transform.position += m_reverseVector;
         }
     }
 
@@ -94,32 +110,40 @@ public class Group : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) //влево с залипанием стрелки
-        {
-            StartCoroutine(Sticking.StickingKey(KeyCode.LeftArrow, Left));
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) { //влево с залипанием стрелки
+            m_vector = Vector3.left;
+            m_reverseVector = Vector3.right;
+            StartCoroutine(Sticking.StickingKey(KeyCode.LeftArrow, Move));
         }
 
-        if (Input.GetKeyDown(KeyCode.A)) //влево с А
-        {
-            StartCoroutine(Sticking.StickingKey(KeyCode.A, Left));
+        if (Input.GetKeyDown(KeyCode.A)) { //влево с А
+            m_vector = Vector3.left;
+            m_reverseVector = Vector3.right;
+            StartCoroutine(Sticking.StickingKey(KeyCode.A, Move));
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) //вправо со стрелки
-        {
-            StartCoroutine(Sticking.StickingKey(KeyCode.RightArrow, Right));
+        if (Input.GetKeyDown(KeyCode.RightArrow)) { //вправо со стрелки
+            m_vector = Vector3.right;
+            m_reverseVector = Vector3.left;
+            StartCoroutine(Sticking.StickingKey(KeyCode.RightArrow, Move));
         }
 
-        if (Input.GetKeyDown(KeyCode.D)) //вправо с D
-        {
-            StartCoroutine(Sticking.StickingKey(KeyCode.D, Right));
+        if (Input.GetKeyDown(KeyCode.D)) { //вправо с D
+            m_vector = Vector3.right;
+            m_reverseVector = Vector3.left;
+            StartCoroutine(Sticking.StickingKey(KeyCode.D, Move));
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow)) {
-            StartCoroutine(Sticking.StickingKey(KeyCode.DownArrow, Down));
+            m_vector = Vector3.down;
+            m_reverseVector = Vector3.up;
+            StartCoroutine(Sticking.StickingKey(KeyCode.DownArrow, Move));
         }
 
         if (Input.GetKeyDown(KeyCode.S)) {
-            StartCoroutine(Sticking.StickingKey(KeyCode.S, Down));
+            m_vector = Vector3.down;
+            m_reverseVector = Vector3.up;
+            StartCoroutine(Sticking.StickingKey(KeyCode.S, Move));
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -127,16 +151,16 @@ public class Group : MonoBehaviour {
         }
 
         //падение
-        if (Time.time - m_lastFall >= 1.0f - (Score.CurrentLevel * 0.1649f)) {
+        if (Time.time - m_lastFall >= 1.0f - (Score.CurrentLevel * 0.17f)) {
             //изменить позицию
-            transform.position += new Vector3(0, -1, 0);
+            transform.position += Vector3.down;
 
             //проверка
             if (IsValidGridPos()) {
                 UpdateGrid();
             } else {
                 //возвращает позицию если проверка не true
-                transform.position += new Vector3(0, 1, 0);
+                transform.position += Vector3.up;
 
                 //Удалить заполненные горизонтальные линии
                 Grid.DeleteFullRows();
