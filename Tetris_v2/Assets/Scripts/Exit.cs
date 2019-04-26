@@ -1,7 +1,12 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class Exit : MonoBehaviour {
-    public void ExitGame() {
-        Application.Quit();
+    public void QuitGame() {
+        if (EditorApplication.isPlaying) {
+            UnityEditor.EditorApplication.isPlaying = false;
+        } else {
+            Application.Quit();
+        }
     }
 }
