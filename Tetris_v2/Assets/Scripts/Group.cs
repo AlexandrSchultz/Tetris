@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class Group : MonoBehaviour {
     private float m_lastFall;
     private Vector3 m_vector;
-    private Vector3 m_reverseVector;
 
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
@@ -126,6 +125,12 @@ public class Group : MonoBehaviour {
 
                 //выключить скрипт
                 enabled = false;
+                
+                foreach (Transform child in GetComponentsInChildren<Transform>()) {
+                    child.transform.parent = Container.Instance.transform;
+                }
+
+                Destroy(gameObject);
             }
             m_lastFall = Time.time;
         }

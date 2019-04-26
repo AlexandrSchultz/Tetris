@@ -6,14 +6,16 @@ public class Preview : MonoBehaviour {
     public Transform[] groups;
     public GameObject[] mino;
 
-    // Start is called before the first frame update
+    public Transform currentTetramino;
+    private Transform m_minos;
+
     private void Start() {
         minoNext = Random.Range(0, 7);
         Spawn();
     }
 
     public void Spawn() {
-        Instantiate(groups[minoNext], transform.position, Quaternion.identity);
+        m_minos = Instantiate(groups[minoNext], transform.position, Quaternion.identity);
 
         minoNext = Random.Range(0, 7);
 
@@ -22,5 +24,7 @@ public class Preview : MonoBehaviour {
         }
 
         mino[minoNext].SetActive(true);
+
+        m_minos.transform.SetParent(currentTetramino);
     }
 }
