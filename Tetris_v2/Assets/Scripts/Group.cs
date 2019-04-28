@@ -4,6 +4,12 @@ using UnityEngine.SceneManagement;
 public class Group : MonoBehaviour {
     private float m_lastFall;
     private Vector3 m_vector;
+    private const int MaxOffset = 2;
+    private int m_offset;
+    private Vector3 m_startPosition;
+    private Transform m_transform;
+    [SerializeField]
+    public bool rotate;
 
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
@@ -62,54 +68,23 @@ public class Group : MonoBehaviour {
     }
 
     private void Rotate() {
-        transform.Rotate(0, 0, -90); //поворачиваем фигуру
-        // проверка если всё удачно то обновляем игровую сетку 
+        (m_transform = transform).Rotate(0, 0, -90);
+        m_startPosition = m_transform.position;
         if (IsValidGridPos()) {
             UpdateGrid();
-        } else { // в противном случае
-            var transform1 = transform;
-            var position = transform1.position;
-            Vector3 startPosition = position; // запоминаем текущую позицию
-            position += Vector3.left; // смещаем на 1 влево
-            transform1.position = position;
-            transform.Rotate(0, 0, -90); // поворачиваем
-            // проверка
-            if (IsValidGridPos()) {
-                UpdateGrid();
-            } else {
-                var transform2 = transform;
-                var position1 = startPosition;
-                position1 += Vector3.right; // смещаем на 1 теперь уже вправо
-                transform2.position = position1;
-                transform.Rotate(0, 0, -90); // поворачиваем
-                //проверка
-                if (IsValidGridPos()) {
-                    UpdateGrid();
-                } else {
-                    var transform3 = transform;
-                    var position2 = startPosition;
-                    position2 += 2 * Vector3.left; // смещае влево на 2
-                    transform3.position = position2;
-                    transform.Rotate(0, 0, -90); //поворачиваем
-                    //проверяем
-                    if (IsValidGridPos()) {
-                        UpdateGrid();
-                    } else {
-                        var transform4 = transform;
-                        var position3 = startPosition;
-                        position3 += 2 * Vector3.right; //смещаем вправо на 2
-                        transform4.position = position3;
-                        transform.Rotate(0, 0, -90); // поворачиваем
-
-                        if (IsValidGridPos()) {
-                            UpdateGrid();
-                        } else { // если ничего не получилось
-                            transform.position = startPosition; // возвращаем стартовую позицию
-                            transform.Rotate(0, 0, 90); // поворачиваем назад 
-                        }
-                    }
-                }
+        } else if (!IsValidGridPos()) {
+            //Пробуем сдвинуть вправо или влево поочерёдно
+            for (m_offset = 1; m_offset <= MaxOffset; m_offset++) {
+                transform.position = m_startPosition - new Vector3(m_offset, 0, 0);
+                if (IsValidGridPos())
+                    return;
+                transform.position = m_startPosition + new Vector3(m_offset, 0, 0);
+                if (IsValidGridPos())
+                    return;
             }
+        } else {
+            transform.position = m_startPosition;
+            transform.Rotate(0, 0, 90);
         }
     }
 
@@ -145,7 +120,9 @@ public class Group : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            Rotate();
+            if (rotate) {
+                Rotate();
+            }
         }
 
         //падение
