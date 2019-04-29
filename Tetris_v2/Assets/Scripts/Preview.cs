@@ -10,6 +10,7 @@ public class Preview : MonoBehaviour {
     private Transform m_minos;
 
     private void Start() {
+        GridOnScene.Instance.Create();
         minoNext = Random.Range(0, 7);
         Spawn();
     }
