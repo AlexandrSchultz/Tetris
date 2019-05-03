@@ -11,6 +11,9 @@ public class Group : MonoBehaviour {
     [SerializeField]
     public bool rotate;
 
+    private Preview m_preview;
+    private Score m_score;
+
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
         foreach (Transform child in transform) {
@@ -25,6 +28,11 @@ public class Group : MonoBehaviour {
                 return false;
         }
         return true;
+    }
+
+    public void Initialize(Score score, Preview preview) {
+        m_score = score;
+        m_preview = preview;
     }
 
     //
@@ -52,6 +60,7 @@ public class Group : MonoBehaviour {
             Destroy(gameObject);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
+        Initialize(m_score, m_preview);
     }
 
     private void Move() {
@@ -141,7 +150,7 @@ public class Group : MonoBehaviour {
                 GridGame.DeleteFullRows();
 
                 //заспавнить новую группу
-                FindObjectOfType<Preview>().Spawn();
+                m_preview.Spawn();
 
                 //выключить скрипт
                 enabled = false;

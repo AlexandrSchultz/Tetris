@@ -2,21 +2,24 @@
 
 public class Preview : MonoBehaviour {
 
+    private Score m_score;
+
     public int minoNext;
-    public Transform[] groups;
+    public Group[] groups;
     public GameObject[] mino;
 
-    public Transform currentTetramino;
-    private Transform m_minos;
-
     private void Start() {
-        GridOnScene.Instance.Create();
         minoNext = Random.Range(0, 7);
         Spawn();
     }
-
+    
+    public void Initialize(Score score) {
+        m_score = score;
+    }
+    
     public void Spawn() {
-        m_minos = Instantiate(groups[minoNext], transform.position, Quaternion.identity);
+        Group group = Instantiate(groups[minoNext], new Vector3(4, 15, 0), Quaternion.identity);
+        group.Initialize(m_score, this);
 
         minoNext = Random.Range(0, 7);
 
@@ -25,7 +28,5 @@ public class Preview : MonoBehaviour {
         }
 
         mino[minoNext].SetActive(true);
-
-        m_minos.transform.SetParent(currentTetramino);
     }
 }
