@@ -13,26 +13,28 @@ public class Group : MonoBehaviour {
 
     private Preview m_preview;
     private Score m_score;
+    private GridGame m_gridGame;
 
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
         foreach (Transform child in transform) {
-            Vector2 v = GridGame.RoundVec2(child.position); //позиция одной миношки(одного блока)
+            Vector2 v = m_gridGame.RoundVec2(child.position); //позиция одной миношки(одного блока)
 
             //проверка на то что блок внутри границы
-            if (!GridGame.InsideBorder(v))
+            if (!m_gridGame.InsideBorder(v))
                 return false;
 
             //блок в сетке
-            if (GridGame.GridForMinos[(int) v.x, (int) v.y] != null && GridGame.GridForMinos[(int) v.x, (int) v.y].parent != transform)
+            if (m_gridGame.GridForMinos[(int) v.x, (int) v.y] != null && m_gridGame.GridForMinos[(int) v.x, (int) v.y].parent != transform)
                 return false;
         }
         return true;
     }
 
-    public void Initialize(Score score, Preview preview) {
+    public void Initialize(Score score, Preview preview, GridGame gridGame) {
         m_score = score;
         m_preview = preview;
+        m_gridGame = gridGame;
     }
 
     //
@@ -40,17 +42,17 @@ public class Group : MonoBehaviour {
         //удаление старых дочерних блоков
         for (int y = 0; y < GridGame.H; ++y) {
             for (int x = 0; x < GridGame.W; ++x) {
-                if (GridGame.GridForMinos[x, y] != null) {
-                    if (GridGame.GridForMinos[x, y].parent == transform) {
-                        GridGame.GridForMinos[x, y] = null;
+                if (m_gridGame.GridForMinos[x, y] != null) {
+                    if (m_gridGame.GridForMinos[x, y].parent == transform) {
+                        m_gridGame.GridForMinos[x, y] = null;
                     }
                 }
             }
         }
         //добавление новых
         foreach (Transform child in transform) {
-            Vector2 v = GridGame.RoundVec2(child.position);
-            GridGame.GridForMinos[(int) v.x, (int) v.y] = child;
+            Vector2 v = m_gridGame.RoundVec2(child.position);
+            m_gridGame.GridForMinos[(int) v.x, (int) v.y] = child;
         }
     }
 
@@ -60,7 +62,7 @@ public class Group : MonoBehaviour {
             Destroy(gameObject);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
-        Initialize(m_score, m_preview);
+        Initialize(m_score, m_preview, m_gridGame);
     }
 
     private void Move() {
@@ -147,7 +149,7 @@ public class Group : MonoBehaviour {
                 transform.position -= Vector3.down;
 
                 //Удалить заполненные горизонтальные линии
-                GridGame.DeleteFullRows();
+                m_gridGame.DeleteFullRows();
 
                 //заспавнить новую группу
                 m_preview.Spawn();
@@ -156,7 +158,7 @@ public class Group : MonoBehaviour {
                 enabled = false;
 
                 foreach (Transform child in GetComponentsInChildren<Transform>()) {
-                    child.transform.parent = Container.Instance.transform;
+                    child.transform.parent = m_gridGame.Container;
                 }
 
                 Destroy(gameObject);

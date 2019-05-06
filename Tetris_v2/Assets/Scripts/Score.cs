@@ -23,6 +23,8 @@ public class Score : MonoBehaviour {
     private int m_countLine;
     private float m_fallSpeed;
 
+    private GridGame m_gridGame;
+
     public static int CurrentLevel {
         get {
             return m_currentLevel;
@@ -36,9 +38,10 @@ public class Score : MonoBehaviour {
     [SerializeField]
     private Text lvl;
 
-    private void Awake() {
+    public void Initialize(GridGame gridGame) {
+        m_gridGame = gridGame;
         //подписка на событие методом, который будет исполнятся по заполнению линии
-        GridGame.LineFull += ClearedLine;
+        m_gridGame.LineFull += ClearedLine;
 
         Plus += Up;
         Minus += Down;

@@ -3,6 +3,7 @@
 public class Preview : MonoBehaviour {
 
     private Score m_score;
+    private GridGame m_gridGame;
 
     public int minoNext;
     public Group[] groups;
@@ -12,14 +13,15 @@ public class Preview : MonoBehaviour {
         minoNext = Random.Range(0, 7);
         Spawn();
     }
-    
-    public void Initialize(Score score) {
+
+    public void Initialize(Score score, GridGame gridGame) {
         m_score = score;
+        m_gridGame = gridGame;
     }
-    
+
     public void Spawn() {
         Group group = Instantiate(groups[minoNext], new Vector3(4, 15, 0), Quaternion.identity);
-        group.Initialize(m_score, this);
+        group.Initialize(m_score, this, m_gridGame);
 
         minoNext = Random.Range(0, 7);
 
