@@ -20,7 +20,8 @@ public class Preview : MonoBehaviour {
     }
 
     public void Spawn() {
-        Group group = Instantiate(groups[minoNext], new Vector3(4, 15, 0), Quaternion.identity);
+        Group group = Instantiate(groups[minoNext], m_gridGame.Container);
+        group.transform.localPosition = new Vector3(4, 15, 0);
         group.Initialize(m_score, this, m_gridGame);
 
         minoNext = Random.Range(0, 7);

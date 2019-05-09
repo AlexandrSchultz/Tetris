@@ -18,7 +18,7 @@ public class Group : MonoBehaviour {
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
         foreach (Transform child in transform) {
-            Vector2 v = m_gridGame.RoundVec2(child.position); //позиция одной миношки(одного блока)
+            Vector2 v = m_gridGame.RoundVec2(child.position - m_gridGame.Container.position); //позиция одной миношки(одного блока)
 
             //проверка на то что блок внутри границы
             if (!m_gridGame.InsideBorder(v))
@@ -51,7 +51,7 @@ public class Group : MonoBehaviour {
         }
         //добавление новых
         foreach (Transform child in transform) {
-            Vector2 v = m_gridGame.RoundVec2(child.position);
+            Vector2 v = m_gridGame.RoundVec2(child.position - m_gridGame.Container.position);
             m_gridGame.GridForMinos[(int) v.x, (int) v.y] = child;
         }
     }

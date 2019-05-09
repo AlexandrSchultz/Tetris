@@ -7,7 +7,6 @@ public class Manager : MonoBehaviour {
     private Score scorePrefab;
     [SerializeField]
     private Preview previewPrefab;
-
     [SerializeField]
     private Transform canvas;
 
