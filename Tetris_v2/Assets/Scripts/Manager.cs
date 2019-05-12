@@ -10,15 +10,22 @@ public class Manager : MonoBehaviour {
     [SerializeField]
     private Transform canvas;
 
-    public void Initialize() {
-        GridGame gridGame = Instantiate(gridGamePrefab, new Vector3((float) 8.301548, (float) 9.585592, (float) -0.2059703), Quaternion.identity, transform);
-        Score score = Instantiate(scorePrefab, new Vector3((float) 748.1743, (float) 191.9733, 0), Quaternion.identity, canvas);
+    [SerializeField]
+    private Vector3 gridPosition;
+    [SerializeField]
+    private Vector3 scorePosition;
+    [SerializeField]
+    private Vector3 previewPosition;
+
+    public void Initialize(Vector3 position) {
+        GridGame gridGame = Instantiate(gridGamePrefab, position + gridPosition, Quaternion.identity, transform);
+        Score score = Instantiate(scorePrefab, 37 * position + scorePosition, Quaternion.identity, canvas);
         score.Initialize(gridGame);
-        Preview preview = Instantiate(previewPrefab, new Vector3(0, 1, 0), Quaternion.identity, transform);
+        Preview preview = Instantiate(previewPrefab, position + previewPosition, Quaternion.identity, transform);
         preview.Initialize(score, gridGame);
     }
 
-    private void Start() {
-        Initialize();
-    }
+//new Vector3((float) 8.301548, (float) 9.585592, (float) -0.2059703)
+//new Vector3((float) 748.1743, (float) 191.9733, 0)
+//new Vector3(0, 1, 0)
 }
