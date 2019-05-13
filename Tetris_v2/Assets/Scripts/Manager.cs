@@ -17,12 +17,12 @@ public class Manager : MonoBehaviour {
     [SerializeField]
     private Vector3 previewPosition;
 
-    public void Initialize(Vector3 position) {
+    public void Initialize(Vector3 position, bool doubleControl) {
         GridGame gridGame = Instantiate(gridGamePrefab, position + gridPosition, Quaternion.identity, transform);
         Score score = Instantiate(scorePrefab, 37 * position + scorePosition, Quaternion.identity, canvas);
         score.Initialize(gridGame);
         Preview preview = Instantiate(previewPrefab, position + previewPosition, Quaternion.identity, transform);
-        preview.Initialize(score, gridGame);
+        preview.Initialize(score, gridGame, doubleControl);
     }
 
 //new Vector3((float) 8.301548, (float) 9.585592, (float) -0.2059703)

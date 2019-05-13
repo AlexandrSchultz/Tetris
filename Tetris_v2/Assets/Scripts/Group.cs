@@ -14,6 +14,7 @@ public class Group : MonoBehaviour {
     private Preview m_preview;
     private Score m_score;
     private GridGame m_gridGame;
+    private bool m_doubleControl;
 
     //провекра дочерних блоков(их позиции внутри сетки/вне сетки)
     private bool IsValidGridPos() {
@@ -31,10 +32,11 @@ public class Group : MonoBehaviour {
         return true;
     }
 
-    public void Initialize(Score score, Preview preview, GridGame gridGame) {
+    public void Initialize(Score score, Preview preview, GridGame gridGame, bool doubleControl) {
         m_score = score;
         m_preview = preview;
         m_gridGame = gridGame;
+        m_doubleControl = doubleControl;
     }
 
     //
@@ -62,7 +64,7 @@ public class Group : MonoBehaviour {
             Destroy(gameObject);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
-        Initialize(m_score, m_preview, m_gridGame);
+        Initialize(m_score, m_preview, m_gridGame, m_doubleControl);
     }
 
     private void Move() {
@@ -100,39 +102,49 @@ public class Group : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) { //влево с залипанием стрелки
-            m_vector = Vector3.left;
-            StartCoroutine(Sticking.StickingKey(KeyCode.LeftArrow, Move));
+        if (!m_doubleControl) {
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) { //влево с залипанием стрелки
+                m_vector = Vector3.left;
+                StartCoroutine(Sticking.StickingKey(KeyCode.LeftArrow, Move));
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightArrow)) { //вправо со стрелки
+                m_vector = Vector3.right;
+                StartCoroutine(Sticking.StickingKey(KeyCode.RightArrow, Move));
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow)) {
+                m_vector = Vector3.down;
+                StartCoroutine(Sticking.StickingKey(KeyCode.DownArrow, Move));
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow)) {
+                if (rotate) {
+                    Rotate();
+                }
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.A)) { //влево с А
-            m_vector = Vector3.left;
-            StartCoroutine(Sticking.StickingKey(KeyCode.A, Move));
-        }
+        if (m_doubleControl) {
+            if (Input.GetKeyDown(KeyCode.A)) { //влево с А
+                m_vector = Vector3.left;
+                StartCoroutine(Sticking.StickingKey(KeyCode.A, Move));
+            }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) { //вправо со стрелки
-            m_vector = Vector3.right;
-            StartCoroutine(Sticking.StickingKey(KeyCode.RightArrow, Move));
-        }
+            if (Input.GetKeyDown(KeyCode.D)) { //вправо с D
+                m_vector = Vector3.right;
+                StartCoroutine(Sticking.StickingKey(KeyCode.D, Move));
+            }
 
-        if (Input.GetKeyDown(KeyCode.D)) { //вправо с D
-            m_vector = Vector3.right;
-            StartCoroutine(Sticking.StickingKey(KeyCode.D, Move));
-        }
+            if (Input.GetKeyDown(KeyCode.S)) {
+                m_vector = Vector3.down;
+                StartCoroutine(Sticking.StickingKey(KeyCode.S, Move));
+            }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow)) {
-            m_vector = Vector3.down;
-            StartCoroutine(Sticking.StickingKey(KeyCode.DownArrow, Move));
-        }
-
-        if (Input.GetKeyDown(KeyCode.S)) {
-            m_vector = Vector3.down;
-            StartCoroutine(Sticking.StickingKey(KeyCode.S, Move));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            if (rotate) {
-                Rotate();
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                if (rotate) {
+                    Rotate();
+                }
             }
         }
 
