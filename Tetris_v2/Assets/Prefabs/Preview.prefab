@@ -67,6 +67,7 @@ MonoBehaviour:
   - {fileID: 425577419678541160}
   - {fileID: 7768343557085426962}
   - {fileID: 6900345059767499805}
+  groupPosition: {x: 4, y: 15, z: 0}
 --- !u!1001 &7124263660161209929
 PrefabInstance:
   m_ObjectHideFlags: 0
