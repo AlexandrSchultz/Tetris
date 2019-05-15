@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Manager : MonoBehaviour {
     [SerializeField]
@@ -17,11 +18,11 @@ public class Manager : MonoBehaviour {
     [SerializeField]
     private Vector3 previewPosition;
 
-    public void Initialize(Vector3 position, bool oneControl, bool twoControl, bool threeControl) {
+    public void Initialize(Vector3 position, List<Dictionary<ControlType, KeyCode>> controlKey) {
         GridGame gridGame = Instantiate(gridGamePrefab, position + gridPosition, Quaternion.identity, transform);
         Score score = Instantiate(scorePrefab, 22 * position + scorePosition, Quaternion.identity, canvas);
         score.Initialize(gridGame);
         Preview preview = Instantiate(previewPrefab, position + previewPosition, Quaternion.identity, transform);
-        preview.Initialize(score, gridGame, oneControl, twoControl, threeControl);
+        preview.Initialize(score, gridGame, controlKey);
     }
 }

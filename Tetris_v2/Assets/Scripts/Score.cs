@@ -18,18 +18,14 @@ public class Score : MonoBehaviour {
     public event Click Minus = delegate { };
 
     private int m_numLinesCleared;
-    private static int m_currentLevel;
-    private static int m_currentScore;
+
+    public int CurrentLevel { get; private set; }
+
+    private int m_currentScore;
     private int m_countLine;
     private float m_fallSpeed;
 
     private GridGame m_gridGame;
-
-    public static int CurrentLevel {
-        get {
-            return m_currentLevel;
-        }
-    }
 
     [SerializeField]
     private Text scoreText;
@@ -64,12 +60,12 @@ public class Score : MonoBehaviour {
     }
 
     private void Up() {
-        m_currentLevel++;
+        CurrentLevel++;
         UpdateUI();
     }
 
     private void Down() {
-        m_currentLevel--;
+        CurrentLevel--;
         UpdateUI();
     }
 
@@ -77,7 +73,7 @@ public class Score : MonoBehaviour {
     private void UpdateUI() {
         scoreText.text = m_currentScore.ToString();
         lineText.text = m_numLinesCleared.ToString();
-        lvl.text = m_currentLevel.ToString();
+        lvl.text = CurrentLevel.ToString();
     }
 
     private void Update() {
